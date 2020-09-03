@@ -1,3 +1,6 @@
+# Project will only get security updates 🔒⚡️
+
+--- ORIGINAL README ---
 # Project is no longer maintained
 
 [![NPM version][npm-image]][npm-url]

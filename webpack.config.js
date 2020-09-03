@@ -9,6 +9,9 @@ module.exports = {
         libraryTarget: 'umd',
         library: 'ReactContextMenu'
     },
+    optimization: {
+        minimize: false //Update this to true or false
+    },
     module: {
         rules: [
             {
@@ -16,13 +19,11 @@ module.exports = {
                 loader: "babel-loader",
                 options: {
                     presets: [
-                        '@babel/preset-react',
-                        ['es2015', {
-                            modules: false
-                        }]
+                        '@babel/preset-react'
                     ],
                     plugins: [
-                        'transform-class-properties'
+                        'transform-class-properties',
+                        ["@babel/plugin-proposal-class-properties"]
                     ]
                 },
                 include: [
@@ -49,11 +50,6 @@ module.exports = {
         new webpack.DefinePlugin({
             "process.env": {
                 "NODE_ENV": JSON.stringify("production")
-            }
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            compressor: {
-                warnings: false
             }
         })
     ]
