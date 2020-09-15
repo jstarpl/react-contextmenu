@@ -1,6 +1,6 @@
 {
-    "name": "@tomxpcvx/react-contextmenu",
-    "version": "2.14.1",
+    "name": "@jstarpl/react-contextmenu",
+    "version": "2.14.2",
     "description": "Context Menu implemented in React",
     "main": "modules/index.js",
     "module": "es6/index.js",
@@ -35,16 +35,16 @@
         "start:server": "http-server public -p 3000",
         "prepublishOnly": "npm run build"
     },
-    "author": "Vivek Kumar Bansal <contact@vkbansal.me>, tomxpcvx <dev@tomxpcvx.wtf>",
+    "author": "Vivek Kumar Bansal <contact@vkbansal.me>, tomxpcvx <dev@tomxpcvx.wtf>, jstarpl <jan.starzak@gmail.com>",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/tomxpcvx/react-contextmenu.git"
+        "url": "https://github.com/jstarpl/react-contextmenu"
     },
     "bugs": {
-        "url": "https://github.com/tomxpcvx/react-contextmenu/issues"
+        "url": "https://github.com/jstarpl/react-contextmenu/issues"
     },
-    "homepage": "https://github.com/tomxpcvx/react-contextmenu",
+    "homepage": "https://github.com/jstarpl/react-contextmenu",
     "dependencies": {
         "classnames": "^2.2.5",
         "object-assign": "^4.1.0"
