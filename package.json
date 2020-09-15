@@ -1,6 +1,6 @@
 {
     "name": "@jstarpl/react-contextmenu",
-    "version": "2.14.2",
+    "version": "2.14.3",
     "description": "Context Menu implemented in React",
     "main": "modules/index.js",
     "module": "es6/index.js",

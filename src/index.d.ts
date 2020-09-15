@@ -1,4 +1,4 @@
-declare module "react-contextmenu" {
+declare module "@jstarpl/react-contextmenu" {
     import * as React from "react";
 
     export interface ContextMenuProps {
