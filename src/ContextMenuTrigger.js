@@ -4,7 +4,7 @@ import cx from 'classnames';
 import assign from 'object-assign';
 
 import { showMenu, hideMenu } from './actions';
-import { callIfExists, cssClasses } from './helpers';
+import { callIfExists, cssClasses, isElementParent } from './helpers';
 
 export default class ContextMenuTrigger extends Component {
     static propTypes = {
@@ -33,7 +33,27 @@ export default class ContextMenuTrigger extends Component {
         disableIfShiftIsPressed: false
     };
 
+
+    componentDidMount() {
+        document.addEventListener(
+            'scroll',
+            this.preventContextMenuOpen,
+            { capture: true }
+        );
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('scroll', this.preventContextMenuOpen);
+    }
+
     touchHandled = false;
+
+    preventContextMenuOpen = (e) => {
+        if (this.touchstartTimeoutId && isElementParent(this.elem, e.target)) {
+            clearTimeout(this.touchstartTimeoutId);
+            this.touchstartTimeoutId = null;
+        }
+    }
 
     handleMouseDown = (event) => {
         if (this.props.holdToDisplay >= 0 && event.button === 0) {

@@ -27,3 +27,15 @@ export const store = {};
 export const canUseDOM = Boolean(
     typeof window !== 'undefined' && window.document && window.document.createElement
 );
+
+export function isElementParent(element, parent) {
+    let current = element;
+    while (current.parentNode) {
+        current = current.parentNode;
+        if (current === parent) {
+            return true;
+        }
+    }
+
+    return false;
+}
