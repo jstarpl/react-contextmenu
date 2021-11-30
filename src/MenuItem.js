@@ -52,7 +52,7 @@ export default class MenuItem extends Component {
         if (this.props.preventClose) return;
 
         hideMenu();
-    }
+    };
 
     render() {
         const {

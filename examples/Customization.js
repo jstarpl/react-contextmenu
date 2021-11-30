@@ -35,7 +35,7 @@ export default class Customization extends Component {
         this.setState(({ logs }) => ({
             logs: [`Clicked on ${data.name} menu ${data.item}`, ...logs]
         }));
-    }
+    };
 
     render() {
         return (

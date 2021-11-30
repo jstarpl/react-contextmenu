@@ -17,7 +17,7 @@ export default class SimpleMenu extends Component {
         this.setState(({ logs }) => ({
             logs: [`Clicked on menu ${data.item}`, ...logs]
         }));
-    }
+    };
 
     render() {
         return (

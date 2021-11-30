@@ -47,21 +47,21 @@ export default class ContextMenuTrigger extends Component {
             );
         }
         callIfExists(this.props.attributes.onMouseDown, event);
-    }
+    };
 
     handleMouseUp = (event) => {
         if (event.button === 0) {
             clearTimeout(this.mouseDownTimeoutId);
         }
         callIfExists(this.props.attributes.onMouseUp, event);
-    }
+    };
 
     handleMouseOut = (event) => {
         if (event.button === 0) {
             clearTimeout(this.mouseDownTimeoutId);
         }
         callIfExists(this.props.attributes.onMouseOut, event);
-    }
+    };
 
     handleTouchstart = (event) => {
         this.touchHandled = false;
@@ -79,7 +79,7 @@ export default class ContextMenuTrigger extends Component {
             );
         }
         callIfExists(this.props.attributes.onTouchStart, event);
-    }
+    };
 
     handleTouchEnd = (event) => {
         if (this.touchHandled) {
@@ -87,7 +87,7 @@ export default class ContextMenuTrigger extends Component {
         }
         clearTimeout(this.touchstartTimeoutId);
         callIfExists(this.props.attributes.onTouchEnd, event);
-    }
+    };
 
     handleContextMenu = (event) => {
         const { mouseButton } = this.props;
@@ -95,7 +95,7 @@ export default class ContextMenuTrigger extends Component {
             this.handleContextClick(event);
         }
         callIfExists(this.props.attributes.onContextMenu, event);
-    }
+    };
 
     handleMouseClick = (event) => {
         const { mouseButton } = this.props;
@@ -103,7 +103,7 @@ export default class ContextMenuTrigger extends Component {
             this.handleContextClick(event);
         }
         callIfExists(this.props.attributes.onClick, event);
-    }
+    };
 
     handleContextClick = (event) => {
         if (this.props.disable) return;
@@ -144,11 +144,11 @@ export default class ContextMenuTrigger extends Component {
             });
             showMenu(showMenuConfig);
         }
-    }
+    };
 
     elemRef = (c) => {
         this.elem = c;
-    }
+    };
 
     render() {
         const { renderTag, attributes, children } = this.props;
