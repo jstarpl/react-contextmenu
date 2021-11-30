@@ -26,11 +26,11 @@
     "clean": "rimraf ./dist && rimraf ./modules && rimraf ./es6",
     "clean:examples": "rimraf ./public",
     "build": "yarn clean && yarn test && yarn build:dist && yarn build:es5 && yarn build:es6",
-    "build:dist": "webpack --progress --profile --colors",
+    "build:dist": "webpack --progress --profile",
     "build:es5": "cross-env BABEL_ENV=es5 babel src --out-dir modules",
     "build:es6": "cross-env BABEL_ENV=es6 babel src --out-dir es6",
     "build:examples": "yarn clean:examples && yarn build:dev",
-    "build:dev": "cross-env BABEL_ENV=es6 webpack --config examples/webpack.config.js --progress --profile --colors",
+    "build:dev": "cross-env BABEL_ENV=es6 webpack --config examples/webpack.config.js --progress --profile",
     "start": "yarn build:examples && yarn start:server",
     "start:server": "http-server public -p 3000",
     "prepublishOnly": "yarn build"
@@ -64,7 +64,6 @@
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.5",
     "babel-jest": "~27.3.1",
     "babel-loader": "~8.2.3",
-    "babel-minify-webpack-plugin": "~0.3.1",
     "coveralls": "~3.1.1",
     "cross-env": "~7.0.3",
     "css-loader": "~6.5.1",
@@ -75,11 +74,11 @@
     "eslint-import-resolver-webpack": "~0.13.2",
     "eslint-plugin-import": "~2.25.3",
     "eslint-plugin-react": "~7.27.0",
-    "extract-text-webpack-plugin": "~3.0.2",
     "history": "~5.1.0",
     "html-webpack-plugin": "~5.5.0",
     "http-server": "~14.0.0",
     "jest": "~27.3.1",
+    "mini-css-extract-plugin": "^2.4.5",
     "prop-types": "~15.7.2",
     "react": "~17.0.2",
     "react-dom": "~17.0.2",
@@ -87,7 +86,8 @@
     "react-test-renderer": "~17.0.2",
     "rimraf": "~3.0.0",
     "style-loader": "~3.3.1",
-    "webpack": "~5.64.1"
+    "webpack": "5.64.4",
+    "webpack-cli": "^4.9.1"
   },
   "jest": {
     "setupFiles": [

@@ -2,14 +2,14 @@
 
 const webpack = require('webpack');
 const path  = require('path');
-const Extract = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MinifyPlugin = require("babel-minify-webpack-plugin");
 
 const PROD = process.env.NODE_ENV === 'production';
 const DEV = !PROD;
 
 const config = {
+    mode: PROD ? "production" : "development",
     entry: ['./examples/index.js'],
     output: {
         filename: DEV ? 'bundle.js' : 'bundle.[hash].js',
@@ -50,19 +50,16 @@ const config = {
             },
             {
                 test: /\.css$/,
-                use: Extract.extract({
-                    fallback: 'style-loader',
-                    use: [{
-                        loader: 'css-loader'
-                    }]
-                }),
+                use: [
+                    DEV ? "style-loader": MiniCssExtractPlugin.loader,
+                    "css-loader"
+                ],
             }
         ]
     },
     plugins: [
-        new Extract({
+        new MiniCssExtractPlugin({
             filename: DEV ? 'styles.css' : 'styles.[contenthash:6].css',
-            allChunks: true
         }),
         new HtmlWebpackPlugin({
             template: 'examples/index.html',
@@ -73,22 +70,5 @@ const config = {
 };
 
 !PROD && (config.devtool = 'source-map');
-
-PROD && config.plugins.push(
-     new webpack.optimize.UglifyJsPlugin({
-        compressor: {
-            warnings: false,
-        }
-    })
-);
-
-PROD && config.plugins.push(
-    new webpack.DefinePlugin({
-        'process.env': {
-            'NODE_ENV': JSON.stringify('production')
-        }
-    }),
-    new MinifyPlugin()
-);
 
 module.exports = config;
