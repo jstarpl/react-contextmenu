@@ -42,11 +42,11 @@ export default function (menuId) {
                     }
                 }
                 this.setState({ trigger: filteredData });
-            }
+            };
 
             handleHide = () => {
                 this.setState({ trigger: null });
-            }
+            };
 
             render() {
                 return <Child {...this.props} id={menuId} trigger={this.state.trigger} />;

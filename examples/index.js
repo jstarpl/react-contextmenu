@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter as Router, Route, NavLink as Link, Switch } from 'react-router-dom';
+import { HashRouter as Router, Route, NavLink as Link, Routes } from 'react-router-dom';
 
 import SimpleMenu from './SimpleMenu';
 import MultipleTargets from './MultipleTargets';
@@ -65,24 +65,23 @@ function App() {
                     </li>
                 </ul>
             </div>
-            <Switch>
-                <Route path='/simple-menu' component={SimpleMenu} />
-                <Route path='/multiple-targets' component={MultipleTargets} />
-                <Route path='/multiple-menus' component={MultipleMenus} />
-                <Route path='/submenus' component={SubMenus} />
-                <Route path='/dynamic-menu' component={DynamicMenu} />
-                <Route path='/customization' component={Customization} />
-                <Route path='/rtl-submenus' component={RTLSubMenu} />
-                <Route path='/nested' component={Nested} />
-            </Switch>
+            <Routes>
+                <Route path='/simple-menu' element={<SimpleMenu />} />
+                <Route path='/multiple-targets' element={<MultipleTargets />} />
+                <Route path='/multiple-menus' element={<MultipleMenus />} />
+                <Route path='/submenus' element={<SubMenus />} />
+                <Route path='/dynamic-menu' element={<DynamicMenu />} />
+                <Route path='/customization' element={<Customization />} />
+                <Route path='/rtl-submenus' element={<RTLSubMenu />} />
+                <Route path='/nested' element={<Nested />} />
+            </Routes>
         </div>
     );
 }
 
-const Routes = (
+ReactDOM.render(
     <Router>
         <App />
-    </Router>
+    </Router>,
+    document.getElementById('main')
 );
-
-ReactDOM.render(Routes, document.getElementById('main'));

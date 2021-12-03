@@ -18,7 +18,7 @@ export default class RTLSubMenu extends Component {
         this.setState(({ logs }) => ({
             logs: [`Clicked on menu ${data.item}`, ...logs]
         }));
-    }
+    };
 
     render() {
         return (

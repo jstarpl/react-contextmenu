@@ -18,7 +18,7 @@ export default class MultipleMenus extends Component {
         this.setState(({ logs }) => ({
             logs: [`Clicked on menu ${data.menu} item ${data.item}`, ...logs]
         }));
-    }
+    };
 
     render() {
         return (

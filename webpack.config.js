@@ -3,9 +3,9 @@ const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
-    entry: "./src/index.js",
+    mode: "production",
     output: {
-        filename: "dist/react-contextmenu.js",
+        filename: "react-contextmenu.js",
         libraryTarget: 'umd',
         library: 'ReactContextMenu'
     },
@@ -46,16 +46,4 @@ module.exports = {
             amd: "react-dom"
         }
     }],
-    plugins: [
-        new webpack.DefinePlugin({
-            "process.env": {
-                "NODE_ENV": JSON.stringify("production")
-            }
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            compressor: {
-                warnings: false
-            }
-        })
-    ]
 };

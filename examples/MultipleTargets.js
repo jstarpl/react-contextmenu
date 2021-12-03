@@ -53,7 +53,7 @@ export default class MultipleTargets extends Component {
         return this.setState(({ logs }) => ({
             logs: [` ${data.name} cannot be ${data.action.toLowerCase()}`, ...logs]
         }));
-    }
+    };
 
     render() {
         const attributes = {

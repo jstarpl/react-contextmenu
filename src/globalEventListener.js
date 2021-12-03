@@ -15,13 +15,13 @@ class GlobalEventListener {
         for (const id in this.callbacks) {
             if (hasOwnProp(this.callbacks, id)) this.callbacks[id].show(event);
         }
-    }
+    };
 
     handleHideEvent = (event) => {
         for (const id in this.callbacks) {
             if (hasOwnProp(this.callbacks, id)) this.callbacks[id].hide(event);
         }
-    }
+    };
 
     register = (showCallback, hideCallback) => {
         const id = uniqueId();
@@ -32,13 +32,13 @@ class GlobalEventListener {
         };
 
         return id;
-    }
+    };
 
     unregister = (id) => {
         if (id && this.callbacks[id]) {
             delete this.callbacks[id];
         }
-    }
+    };
 }
 
 export default new GlobalEventListener();
