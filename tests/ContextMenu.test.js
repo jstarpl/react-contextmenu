@@ -283,4 +283,44 @@ describe('ContextMenu tests', () => {
 
         component.unmount();
     });
+
+    test('should preserve the selected item after an enter', () => {
+        const data = { position: { x: 50, y: 50 }, id: 'CORRECT_ID' };
+        const onHide = jest.fn();
+        const component = mount(
+            <ContextMenu id={data.id} onHide={onHide}>
+                <MenuItem onClick={jest.fn()} preventClose>Item 1</MenuItem>
+                <MenuItem divider />
+                <MenuItem onClick={jest.fn()} preventClose>Item 2</MenuItem>
+            </ContextMenu>
+        );
+        const upArrow = new window.KeyboardEvent('keydown', { keyCode: 38 });
+        const enter = new window.KeyboardEvent('keydown', { keyCode: 13 });
+
+        showMenu(data);
+        // Check that it's visible and there is no selected item at first.
+        expect(component.state()).toEqual(
+            Object.assign(
+                { isVisible: true, forceSubMenuOpen: false, selectedItem: null },
+                data.position
+            )
+        );
+
+        // Select the second item up arrow.
+        document.dispatchEvent(upArrow);
+        expect(component.state().selectedItem).toEqual({
+            index: 1,
+            type: MenuItem
+        });
+
+        // Press enter select it.
+        document.dispatchEvent(enter);
+        // The selected item should be preserved and not reset.
+        expect(component.state().selectedItem).toEqual({
+            index: 1,
+            type: MenuItem
+        });
+
+        component.unmount();
+    });
 });
