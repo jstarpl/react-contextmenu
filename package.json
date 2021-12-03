@@ -1,6 +1,6 @@
 {
   "name": "@firefox-devtools/react-contextmenu",
-  "version": "2.14.0",
+  "version": "3.0.0",
   "description": "Context Menu implemented in React",
   "main": "modules/index.js",
   "module": "es6/index.js",
