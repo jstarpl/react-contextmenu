@@ -313,7 +313,7 @@ describe('ContextMenu tests', () => {
             type: MenuItem
         });
 
-        // Press enter select it.
+        // Press enter to select it.
         document.dispatchEvent(enter);
         // The selected item should be preserved and not reset.
         expect(component.state().selectedItem).toEqual({

@@ -163,6 +163,15 @@ export default class AbstractMenu extends Component {
         this.setState({ selectedItem: null, forceSubMenuOpen: false });
     };
 
+    /**
+     * Render all the children.
+     * It has a `childIndexRef` parameter to be able to construct the child
+     * indexes properly. A reference was needed for this function because this
+     * is a recursive function that could mutate the index and pass it back to
+     * the caller. That parameter should always be undefined while calling from
+     * outside.
+     * TODO: Rewrite this function in a way that we don't need this reference.
+     */
     renderChildren = (children, childIndexRef = { value: -1 }) =>
         React.Children.map(children, (child) => {
             let currentChildIndexRef = childIndexRef;
