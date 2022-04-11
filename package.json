@@ -19,7 +19,7 @@
     "src/index.d.ts"
   ],
   "scripts": {
-    "lint": "eslint ./src ./examples",
+    "lint": "eslint ./src ./tests ./examples",
     "test": "yarn lint && yarn test:only",
     "test:only": "jest --no-cache --verbose --coverage",
     "test:dev": "jest --watchAll --no-cache --verbose --coverage",
