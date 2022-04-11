@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import assign from 'object-assign';
@@ -8,6 +9,15 @@ import AbstractMenu from './AbstractMenu';
 import SubMenu from './SubMenu';
 import { hideMenu } from './actions';
 import { cssClasses, callIfExists, store } from './helpers';
+
+/* This is a backward-compatible shim for React < 18 */
+function flushSync(callback) {
+    if (ReactDOM.flushSync) {
+        ReactDOM.flushSync(callback);
+    } else {
+        callback();
+    }
+}
 
 export default class ContextMenu extends AbstractMenu {
     static propTypes = {
@@ -124,7 +134,11 @@ export default class ContextMenu extends AbstractMenu {
     handleHide = (e) => {
         if (this.state.isVisible && (!e.detail || !e.detail.id || e.detail.id === this.props.id)) {
             this.unregisterHandlers();
-            this.setState({ isVisible: false, selectedItem: null, forceSubMenuOpen: false });
+            flushSync(() => {
+                /* We rely on being able to read this state change in handleShow,
+                 * so let's force a synchronous update in React 18. */
+                this.setState({ isVisible: false, selectedItem: null, forceSubMenuOpen: false });
+            });
             callIfExists(this.props.onHide, e);
         }
     };
