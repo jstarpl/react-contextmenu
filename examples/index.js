@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter as Router, Route, NavLink as Link, Routes } from 'react-router-dom';
+import { HashRouter as Router, Route, NavLink, Routes } from 'react-router-dom';
 
 import SimpleMenu from './SimpleMenu';
 import MultipleTargets from './MultipleTargets';
@@ -14,8 +14,7 @@ import Nested from './Nested';
 import './react-contextmenu.css';
 
 const commonProps = {
-    className: 'pure-menu-link',
-    activeClassName: 'link-active'
+    className: 'pure-menu-link'
 };
 
 function App() {
@@ -24,44 +23,44 @@ function App() {
             <div className='pure-menu pure-menu-horizontal'>
                 <ul className='pure-menu-list'>
                     <li className='pure-menu-item'>
-                        <Link {...commonProps} to='/simple-menu'>
+                        <NavLink {...commonProps} to='/simple-menu'>
                             Simple Menu
-                        </Link>
+                        </NavLink>
                     </li>
                     <li className='pure-menu-item'>
-                        <Link {...commonProps} to='/multiple-targets'>
+                        <NavLink {...commonProps} to='/multiple-targets'>
                             Multiple Targets
-                        </Link>
+                        </NavLink>
                     </li>
                     <li className='pure-menu-item'>
-                        <Link {...commonProps} to='/multiple-menus'>
+                        <NavLink {...commonProps} to='/multiple-menus'>
                             Multiple Menus
-                        </Link>
+                        </NavLink>
                     </li>
                     <li className='pure-menu-item'>
-                        <Link {...commonProps} to='/submenus'>
+                        <NavLink {...commonProps} to='/submenus'>
                             Sub Menus
-                        </Link>
+                        </NavLink>
                     </li>
                     <li className='pure-menu-item'>
-                        <Link {...commonProps} to='/dynamic-menu'>
+                        <NavLink {...commonProps} to='/dynamic-menu'>
                             Dynamic Menu
-                        </Link>
+                        </NavLink>
                     </li>
                     <li className='pure-menu-item'>
-                        <Link {...commonProps} to='/customization'>
+                        <NavLink {...commonProps} to='/customization'>
                             Customization
-                        </Link>
+                        </NavLink>
                     </li>
                     <li className='pure-menu-item'>
-                        <Link {...commonProps} to='/rtl-submenus'>
+                        <NavLink {...commonProps} to='/rtl-submenus'>
                             Right-to-Left
-                        </Link>
+                        </NavLink>
                     </li>
                     <li className='pure-menu-item'>
-                        <Link {...commonProps} to='/nested'>
+                        <NavLink {...commonProps} to='/nested'>
                             Nested
-                        </Link>
+                        </NavLink>
                     </li>
                 </ul>
             </div>
