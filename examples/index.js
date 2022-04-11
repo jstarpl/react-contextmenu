@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOMClient from 'react-dom/client';
 import { HashRouter as Router, Route, NavLink, Routes } from 'react-router-dom';
 
 import SimpleMenu from './SimpleMenu';
@@ -78,9 +78,9 @@ function App() {
     );
 }
 
-ReactDOM.render(
+const root = ReactDOMClient.createRoot(document.getElementById('main'));
+root.render(
     <Router>
         <App />
-    </Router>,
-    document.getElementById('main')
+    </Router>
 );
