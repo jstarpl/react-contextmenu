@@ -25,24 +25,29 @@ export default class AbstractMenu extends Component {
             return;
         }
 
-        switch (e.keyCode) {
-            case 37: // left arrow
-            case 27: // escape
+        switch (e.key) {
+            case 'ArrowLeft': // left arrow
+            case 'Left': // IE specific value
+            case 'Escape': // escape
+            case 'Esc': // IE specific value
                 e.preventDefault();
                 this.hideMenu(e);
                 break;
-            case 38: // up arrow
+            case 'ArrowUp': // up arrow
+            case 'Up': // IE specific value
                 e.preventDefault();
                 this.selectChildren(true);
                 break;
-            case 40: // down arrow
+            case 'ArrowDown': // down arrow
+            case 'Down': // IE specific value
                 e.preventDefault();
                 this.selectChildren(false);
                 break;
-            case 39: // right arrow
+            case 'ArrowRight': // right arrow
+            case 'Right': // IE specific value
                 this.tryToOpenSubMenu(e);
                 break;
-            case 13: // enter
+            case 'Enter': // enter
                 e.preventDefault();
                 this.tryToOpenSubMenu(e);
                 {
