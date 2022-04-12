@@ -1,326 +1,213 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { render, screen, act, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import ContextMenu from '../src/ContextMenu';
 import MenuItem from '../src/MenuItem';
-import { showMenu, hideMenu } from '../src/actions';
+import { showMenu as realShowMenu, hideMenu as realHideMenu } from '../src/actions';
+
+function contextMenuElement() {
+    return document.querySelector('.react-contextmenu');
+}
+
+function visibleContextMenuElement() {
+    return document.querySelector('.react-contextmenu--visible');
+}
+
+function selectedItemElement() {
+    return document.querySelector('.react-contextmenu-item--selected');
+}
+
+async function showMenu(data) {
+    act(() => { realShowMenu(data); });
+    await waitFor(() => expect(contextMenuElement()).toBeVisible());
+}
+
+async function hideMenu(data) {
+    act(() => { realHideMenu(data); });
+    await waitFor(() => expect(contextMenuElement()).not.toBeVisible());
+}
 
 describe('ContextMenu tests', () => {
-    test('shows when event with correct "id" is triggered', () => {
+    test('shows when event with correct "id" is triggered', async () => {
         const ID = 'CORRECT_ID';
         const x = 50;
         const y = 50;
-        const component = mount(<ContextMenu id={ID} />);
+        render(<ContextMenu id={ID} />);
 
-        expect(component).toMatchSnapshot();
-        expect(component.state()).toEqual({
-            isVisible: false,
-            x: 0,
-            y: 0,
-            forceSubMenuOpen: false,
-            selectedItem: null
-        });
-        showMenu({ position: { x, y }, id: ID });
-        component.update();
-        expect(component.state()).toEqual({
-            isVisible: true,
-            x,
-            y,
-            forceSubMenuOpen: false,
-            selectedItem: null
-        });
-        expect(component.find('.react-contextmenu--visible').length).toBe(1);
-        expect(component).toMatchSnapshot();
-        component.unmount();
+        expect(document.body).toMatchSnapshot();
+        await showMenu({ position: { x, y }, id: ID });
+        expect(visibleContextMenuElement()).toBeInTheDocument();
+        expect(document.body).toMatchSnapshot();
     });
 
-    test('does not shows when event with incorrect "id" is triggered', () => {
+    test('does not show when event with incorrect "id" is triggered', async () => {
         const ID = 'CORRECT_ID';
         const x = 50;
         const y = 50;
-        const component = mount(<ContextMenu id={ID} />);
+        render(<ContextMenu id={ID} />);
 
-        expect(component).toMatchSnapshot();
-        expect(component.state()).toEqual({
-            isVisible: false,
-            x: 0,
-            y: 0,
-            forceSubMenuOpen: false,
-            selectedItem: null
-        });
-        showMenu({ position: { x, y }, id: 'ID' });
-        component.update();
-        expect(component.state()).toEqual({
-            isVisible: false,
-            x: 0,
-            y: 0,
-            forceSubMenuOpen: false,
-            selectedItem: null
-        });
-        expect(component.find('.react-contextmenu--visible').length).toBe(0);
-        expect(component).toMatchSnapshot();
-        component.unmount();
+        await expect(showMenu({ position: { x, y }, id: 'WRONG_ID' })).rejects.toThrow();
+        expect(visibleContextMenuElement()).not.toBeInTheDocument();
     });
 
-    test('onShow and onHide are triggered correctly', () => {
+    test('onShow and onHide are triggered correctly', async () => {
         const data = { position: { x: 50, y: 50 }, id: 'CORRECT_ID' };
         const onShow = jest.fn();
         const onHide = jest.fn();
-        const component = mount(<ContextMenu id={data.id} onShow={onShow} onHide={onHide} />);
+        render(<ContextMenu id={data.id} onShow={onShow} onHide={onHide} />);
 
-        hideMenu();
-        showMenu(data);
-        expect(component.state()).toEqual(
-            Object.assign(
-                { isVisible: true, forceSubMenuOpen: false, selectedItem: null },
-                data.position
-            )
-        );
+        await hideMenu();
+        await showMenu(data);
         expect(onShow).toHaveBeenCalled();
-        showMenu(data);
+        expect(visibleContextMenuElement()).toBeInTheDocument();
+        await showMenu(data);
         expect(onShow).toHaveBeenCalledTimes(1);
         expect(onHide).not.toHaveBeenCalled();
-        hideMenu();
-        expect(component.state()).toEqual(
-            Object.assign(
-                { isVisible: false, forceSubMenuOpen: false, selectedItem: null },
-                data.position
-            )
-        );
+        expect(visibleContextMenuElement()).toBeInTheDocument();
+        await hideMenu();
         expect(onShow).toHaveBeenCalledTimes(1);
         expect(onHide).toHaveBeenCalledTimes(1);
-        component.unmount();
+        expect(visibleContextMenuElement()).not.toBeInTheDocument();
     });
 
-    test('menu should close on "Escape"', () => {
+    test('menu should close on "Escape"', async () => {
         const data = { position: { x: 50, y: 50 }, id: 'CORRECT_ID' };
         const onHide = jest.fn();
-        const component = mount(<ContextMenu id={data.id} onHide={onHide} />);
-        const escape = new window.KeyboardEvent('keydown', { keyCode: 27 });
+        render(<ContextMenu id={data.id} onHide={onHide} />);
+        const user = userEvent.setup();
 
-        showMenu(data);
-        expect(component.state()).toEqual(
-            Object.assign(
-                { isVisible: true, forceSubMenuOpen: false, selectedItem: null },
-                data.position
-            )
-        );
-        document.dispatchEvent(escape);
-        expect(component.state()).toEqual(
-            Object.assign(
-                { isVisible: false, forceSubMenuOpen: false, selectedItem: null },
-                data.position
-            )
-        );
+        await showMenu(data);
+        expect(visibleContextMenuElement()).toBeInTheDocument();
+        await user.keyboard('{Escape}');
+        expect(visibleContextMenuElement()).not.toBeInTheDocument();
         expect(onHide).toHaveBeenCalled();
-        component.unmount();
     });
 
-    test('menu should close on "Enter" when selectedItem is null', () => {
+    test('menu should close on "Enter" when selectedItem is null', async () => {
         const data = { position: { x: 50, y: 50 }, id: 'CORRECT_ID' };
         const onHide = jest.fn();
-        const component = mount(<ContextMenu id={data.id} onHide={onHide} />);
-        const enter = new window.KeyboardEvent('keydown', { keyCode: 13 });
+        render(<ContextMenu id={data.id} onHide={onHide} />);
+        const user = userEvent.setup();
 
-        showMenu(data);
-        expect(component.state()).toEqual(
-            Object.assign(
-                { isVisible: true, forceSubMenuOpen: false, selectedItem: null },
-                data.position
-            )
-        );
-        document.dispatchEvent(enter);
-        expect(component.state()).toEqual(
-            Object.assign(
-                { isVisible: false, forceSubMenuOpen: false, selectedItem: null },
-                data.position
-            )
-        );
+        await showMenu(data);
+        await user.keyboard('{Enter}');
         expect(onHide).toHaveBeenCalled();
-        component.unmount();
     });
 
-    test('menu should close on "outside" click', () => {
+    test('menu should close on "outside" click', async () => {
         const data = { position: { x: 50, y: 50 }, id: 'CORRECT_ID' };
         const onHide = jest.fn();
-        const component = mount(<ContextMenu id={data.id} onHide={onHide} />);
-        const outsideClick = new window.MouseEvent('mousedown', { target: document });
+        render(<ContextMenu id={data.id} onHide={onHide} />);
+        const user = userEvent.setup();
 
-        showMenu(data);
-        expect(component.state()).toEqual(
-            Object.assign(
-                { isVisible: true, forceSubMenuOpen: false, selectedItem: null },
-                data.position
-            )
-        );
-        component.simulate('mousedown');
-        expect(component.state()).toEqual(
-            Object.assign(
-                { isVisible: true, forceSubMenuOpen: false, selectedItem: null },
-                data.position
-            )
-        );
-        document.dispatchEvent(outsideClick);
-        expect(component.state()).toEqual(
-            Object.assign(
-                { isVisible: false, forceSubMenuOpen: false, selectedItem: null },
-                data.position
-            )
-        );
+        await showMenu(data);
+        expect(visibleContextMenuElement()).toBeInTheDocument();
+        await user.click(visibleContextMenuElement());
+        expect(visibleContextMenuElement()).toBeInTheDocument();
+        await user.click(document.body);
+        expect(visibleContextMenuElement()).not.toBeInTheDocument();
         expect(onHide).toHaveBeenCalled();
-        component.unmount();
     });
 
-    test('hideOnLeave and onMouseLeave options', () => {
+    test('hideOnLeave and onMouseLeave options', async () => {
         const data = { position: { x: 50, y: 50 }, id: 'CORRECT_ID' };
         const onMouseLeave = jest.fn();
-        const component = mount(
+        render(
             <ContextMenu id={data.id} hideOnLeave onMouseLeave={onMouseLeave} />
         );
+        const user = userEvent.setup();
 
-        showMenu(data);
-        expect(component.state()).toEqual(
-            Object.assign(
-                { isVisible: true, forceSubMenuOpen: false, selectedItem: null },
-                data.position
-            )
-        );
-        component.simulate('mouseleave');
-        expect(component.state()).toEqual(
-            Object.assign(
-                { isVisible: false, forceSubMenuOpen: false, selectedItem: null },
-                data.position
-            )
-        );
+        await showMenu(data);
+        expect(visibleContextMenuElement()).toBeInTheDocument();
+        await user.hover(visibleContextMenuElement());
+        await user.unhover(visibleContextMenuElement());
+        expect(visibleContextMenuElement()).not.toBeInTheDocument();
         expect(onMouseLeave).toHaveBeenCalled();
-        component.unmount();
     });
 
-    test('should select the proper menu items with down arrow', () => {
+    test('should select the proper menu items with down arrow', async () => {
         const data = { position: { x: 50, y: 50 }, id: 'CORRECT_ID' };
         const onHide = jest.fn();
-        const component = mount(
+        render(
             <ContextMenu id={data.id} onHide={onHide}>
                 <MenuItem onClick={jest.fn()}>Item 1</MenuItem>
                 <MenuItem onClick={jest.fn()}>Item 2</MenuItem>
             </ContextMenu>
         );
-        const downArrow = new window.KeyboardEvent('keydown', { keyCode: 40 });
+        const user = userEvent.setup();
 
-        showMenu(data);
+        await showMenu(data);
         // Check that it's visible and there is no selected item at first.
-        expect(component.state()).toEqual(
-            Object.assign(
-                { isVisible: true, forceSubMenuOpen: false, selectedItem: null },
-                data.position
-            )
-        );
+        expect(visibleContextMenuElement()).toBeInTheDocument();
+        expect(selectedItemElement()).not.toBeInTheDocument();
 
         // Select the first item with down arrow.
-        document.dispatchEvent(downArrow);
-        // Index 0 with MenuItem type should be selected.
-        expect(component.state().selectedItem).toEqual({
-            index: 0,
-            type: MenuItem
-        });
+        await user.keyboard('{ArrowDown}');
+        expect(screen.getByText('Item 1')).toHaveClass('react-contextmenu-item--selected');
 
         // Select the second item with down arrow.
-        document.dispatchEvent(downArrow);
+        await user.keyboard('{ArrowDown}');
         // Index 1 with MenuItem type should be selected.
-        expect(component.state().selectedItem).toEqual({
-            index: 1,
-            type: MenuItem
-        });
+        expect(screen.getByText('Item 2')).toHaveClass('react-contextmenu-item--selected');
 
         // Select the next item. But since this was the last item, it should loop
         // back to the first again.
-        document.dispatchEvent(downArrow);
+        await user.keyboard('{ArrowDown}');
         // Index 0 with MenuItem type should be selected.
-        expect(component.state().selectedItem).toEqual({
-            index: 0,
-            type: MenuItem
-        });
-
-        component.unmount();
+        expect(screen.getByText('Item 1')).toHaveClass('react-contextmenu-item--selected');
     });
 
-    test('should select the proper menu items with up arrow', () => {
+    test('should select the proper menu items with up arrow', async () => {
         const data = { position: { x: 50, y: 50 }, id: 'CORRECT_ID' };
         const onHide = jest.fn();
-        const component = mount(
+        render(
             <ContextMenu id={data.id} onHide={onHide}>
                 <MenuItem onClick={jest.fn()}>Item 1</MenuItem>
                 <MenuItem onClick={jest.fn()}>Item 2</MenuItem>
             </ContextMenu>
         );
-        const upArrow = new window.KeyboardEvent('keydown', { keyCode: 38 });
+        const user = userEvent.setup();
 
-        showMenu(data);
+        await showMenu(data);
         // Check that it's visible and there is no selected item at first.
-        expect(component.state()).toEqual(
-            Object.assign(
-                { isVisible: true, forceSubMenuOpen: false, selectedItem: null },
-                data.position
-            )
-        );
+        expect(visibleContextMenuElement()).toBeInTheDocument();
+        expect(selectedItemElement()).not.toBeInTheDocument();
 
         // Select the previous item. But since there was nothing selected, it
         // should loop back down to the last item.
-        document.dispatchEvent(upArrow);
-        // Index 1 with MenuItem type should be selected.
-        expect(component.state().selectedItem).toEqual({
-            index: 1,
-            type: MenuItem
-        });
+        await user.keyboard('{ArrowUp}');
+        expect(screen.getByText('Item 2')).toHaveClass('react-contextmenu-item--selected');
 
         // Select the first item with up arrow.
-        document.dispatchEvent(upArrow);
-        // Index 0 with MenuItem type should be selected.
-        expect(component.state().selectedItem).toEqual({
-            index: 0,
-            type: MenuItem
-        });
-
-        component.unmount();
+        await user.keyboard('{ArrowUp}');
+        expect(screen.getByText('Item 1')).toHaveClass('react-contextmenu-item--selected');
     });
 
-    test('should preserve the selected item after an enter', () => {
+    test('should preserve the selected item after an enter', async () => {
         const data = { position: { x: 50, y: 50 }, id: 'CORRECT_ID' };
         const onHide = jest.fn();
-        const component = mount(
+        render(
             <ContextMenu id={data.id} onHide={onHide}>
                 <MenuItem onClick={jest.fn()} preventClose>Item 1</MenuItem>
                 <MenuItem divider />
                 <MenuItem onClick={jest.fn()} preventClose>Item 2</MenuItem>
             </ContextMenu>
         );
-        const upArrow = new window.KeyboardEvent('keydown', { keyCode: 38 });
-        const enter = new window.KeyboardEvent('keydown', { keyCode: 13 });
+        const user = userEvent.setup();
 
-        showMenu(data);
+        await showMenu(data);
         // Check that it's visible and there is no selected item at first.
-        expect(component.state()).toEqual(
-            Object.assign(
-                { isVisible: true, forceSubMenuOpen: false, selectedItem: null },
-                data.position
-            )
-        );
+        expect(visibleContextMenuElement()).toBeInTheDocument();
+        expect(selectedItemElement()).not.toBeInTheDocument();
 
         // Select the second item up arrow.
-        document.dispatchEvent(upArrow);
-        expect(component.state().selectedItem).toEqual({
-            index: 1,
-            type: MenuItem
-        });
+        await user.keyboard('{ArrowUp}');
+        expect(screen.getByText('Item 2')).toHaveClass('react-contextmenu-item--selected');
 
         // Press enter to select it.
-        document.dispatchEvent(enter);
+        await user.keyboard('{Enter}');
         // The selected item should be preserved and not reset.
-        expect(component.state().selectedItem).toEqual({
-            index: 1,
-            type: MenuItem
-        });
-
-        component.unmount();
+        expect(screen.getByText('Item 2')).toHaveClass('react-contextmenu-item--selected');
     });
 });

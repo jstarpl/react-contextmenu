@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 
 import MenuItem from '../src/MenuItem';
 
@@ -10,11 +10,12 @@ describe('MenuItem tests', () => {
             className: 'CLASSNAME_ATTRIBUTE'
         };
 
-        const wrapper = shallow(
-            <MenuItem className={className} attributes={attributes} />
+        render(
+            <MenuItem className={className} attributes={attributes}>Item</MenuItem>
         );
 
-        expect(wrapper.hasClass(className)).toBe(true);
-        expect(wrapper.hasClass(attributes.className)).toBe(true);
+        const element = screen.getByText('Item');
+        expect(element).toHaveClass(className);
+        expect(element).toHaveClass(attributes.className);
     });
 });
