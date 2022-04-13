@@ -170,7 +170,7 @@ export default class ContextMenu extends AbstractMenu {
     // Disabling this rule for more consistency.
     /* eslint-disable-next-line class-methods-use-this */
     hideMenu = (e) => {
-        if (e.keyCode === 27 || e.keyCode === 13) { // ECS or enter
+        if (e.key === 'Escape' || e.key === 'Esc' || e.key === 'Enter') {
             hideMenu();
         }
     };
