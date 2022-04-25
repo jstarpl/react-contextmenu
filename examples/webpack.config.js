@@ -16,7 +16,6 @@ const config = {
         path: path.resolve(__dirname, '../public'),
         publicPath: DEV ? '/' : '/react-contextmenu/',
         hashDigestLength: 6,
-        sourceMapFilename: 'bundle.js.map'
     },
     resolve: {
         modules: [
