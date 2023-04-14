@@ -143,6 +143,7 @@ export default class SubMenu extends AbstractMenu {
             position.top = 0;
         }
 
+        // eslint-disable-next-line no-magic-numbers
         if (rect.left < 0) {
             position.left = '100%';
         } else {
@@ -263,10 +264,13 @@ export default class SubMenu extends AbstractMenu {
         };
 
         return (
+            // eslint-disable-next-line react/jsx-props-no-spreading
             <nav {...menuProps} role='menuitem' tabIndex='-1' aria-haspopup='true'>
+                {/* eslint-disable-next-line react/jsx-props-no-spreading */}
                 <div {...attributes} {...menuItemProps}>
                     {title}
                 </div>
+                {/* eslint-disable-next-line react/jsx-props-no-spreading */}
                 <nav {...subMenuProps} role='menu' tabIndex='-1'>
                     {this.renderChildren(children)}
                 </nav>

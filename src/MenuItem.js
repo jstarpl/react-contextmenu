@@ -4,7 +4,7 @@ import cx from 'classnames';
 import assign from 'object-assign';
 
 import { hideMenu } from './actions';
-import { callIfExists, cssClasses, store } from './helpers';
+import { callIfExists, cssClasses, store, PRIMARY_MOUSE_BUTTON, SECONDARY_MOUSE_BUTTON } from './helpers';
 
 export default class MenuItem extends Component {
     static propTypes = {
@@ -36,7 +36,7 @@ export default class MenuItem extends Component {
     };
 
     handleClick = (event) => {
-        if (event.button !== 0 && event.button !== 1) {
+        if (event.button !== PRIMARY_MOUSE_BUTTON && event.button !== SECONDARY_MOUSE_BUTTON) {
             event.preventDefault();
         }
 
@@ -77,6 +77,7 @@ export default class MenuItem extends Component {
 
         return (
             <div
+                // eslint-disable-next-line react/jsx-props-no-spreading
                 {...attributes} className={menuItemClassNames}
                 role='menuitem' tabIndex='-1' aria-disabled={disabled ? 'true' : 'false'}
                 aria-orientation={divider ? 'horizontal' : null}

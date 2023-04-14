@@ -2,7 +2,7 @@
 
 const webpack = require('webpack');
 const path  = require('path');
-const Extract = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MinifyPlugin = require("babel-minify-webpack-plugin");
 
@@ -52,20 +52,12 @@ const config = {
             },
             {
                 test: /\.css$/,
-                use: Extract.extract({
-                    fallback: 'style-loader',
-                    use: [{
-                        loader: 'css-loader'
-                    }]
-                }),
+                use: [MiniCssExtractPlugin.loader, 'css-loader'],
             }
         ]
     },
     plugins: [
-        new Extract({
-            filename: DEV ? 'styles.css' : 'styles.[contenthash:6].css',
-            allChunks: true
-        }),
+        new MiniCssExtractPlugin(),
         new HtmlWebpackPlugin({
             template: 'examples/index.html',
             inject: true,

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import MenuItem from './MenuItem';
+import { KEYBOARD_CODES } from './helpers';
 
 export default class AbstractMenu extends Component {
     static propTypes = {
@@ -19,30 +20,33 @@ export default class AbstractMenu extends Component {
     }
 
     handleKeyNavigation = (e) => {
-        // check for isVisible strictly here as it might be undefined when this code executes in the context of SubMenu
-        // but we only need to check when it runs in the ContextMenu context
+        /*
+         *   Check for isVisible strictly here as it might be undefined when this code executes in the context of SubMenu
+         *   but we only need to check when it runs in the ContextMenu context
+         */
         if (this.state.isVisible === false) {
             return;
         }
 
-        switch (e.keyCode) {
-            case 37: // left arrow
-            case 27: // escape
+        switch (e.code) {
+            case KEYBOARD_CODES.ArrowLeft: // left arrow
+            case KEYBOARD_CODES.Escape: // escape
                 e.preventDefault();
                 this.hideMenu(e);
                 break;
-            case 38: // up arrow
+            case KEYBOARD_CODES.ArrowUp: // up arrow
                 e.preventDefault();
                 this.selectChildren(true);
                 break;
-            case 40: // down arrow
+            case KEYBOARD_CODES.ArrowDown: // down arrow
                 e.preventDefault();
                 this.selectChildren(false);
                 break;
-            case 39: // right arrow
+            case KEYBOARD_CODES.ArrowRight: // right arrow
                 this.tryToOpenSubMenu(e);
                 break;
-            case 13: // enter
+            case KEYBOARD_CODES.Enter: // enter
+            case KEYBOARD_CODES.NumpadEnter:
                 e.preventDefault();
                 this.tryToOpenSubMenu(e);
                 {
@@ -79,16 +83,20 @@ export default class AbstractMenu extends Component {
     selectChildren = (forward) => {
         const { selectedItem } = this.state;
         const children = [];
+        // eslint-disable-next-line no-magic-numbers
         let disabledChildrenCount = 0;
         let disabledChildIndexes = {};
 
         const childCollector = (child, index) => {
-            // child can be empty in case you do conditional rendering of components, in which
-            // case it should not be accounted for as a real child
+            /*
+             *   child can be empty in case you do conditional rendering of components, in which
+             *   case it should not be accounted for as a real child
+             */
             if (!child) {
                 return;
             }
 
+            // eslint-disable-next-line no-magic-numbers
             if ([MenuItem, this.getSubMenuType()].indexOf(child.type) < 0) {
                 // Maybe the MenuItem or SubMenu is capsuled in a wrapper div or something else
                 React.Children.forEach(child.props.children, childCollector);
@@ -117,9 +125,12 @@ export default class AbstractMenu extends Component {
                     ++i;
                 }
 
+                // eslint-disable-next-line no-magic-numbers
                 if (i < 0) {
+                    // eslint-disable-next-line no-magic-numbers
                     i = children.length - 1;
                 } else if (i >= children.length) {
+                    // eslint-disable-next-line no-magic-numbers
                     i = 0;
                 }
             };
@@ -155,6 +166,7 @@ export default class AbstractMenu extends Component {
     renderChildren = children => React.Children.map(children, (child) => {
         const props = {};
         if (!React.isValidElement(child)) return child;
+        // eslint-disable-next-line no-magic-numbers
         if ([MenuItem, this.getSubMenuType()].indexOf(child.type) < 0) {
             // Maybe the MenuItem or SubMenu is capsuled in a wrapper div or something else
             props.children = this.renderChildren(child.props.children);

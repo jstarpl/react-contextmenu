@@ -4,7 +4,7 @@ import cx from 'classnames';
 import assign from 'object-assign';
 
 import { showMenu, hideMenu } from './actions';
-import { callIfExists, cssClasses, isElementParent } from './helpers';
+import { callIfExists, cssClasses, isElementParent, PRIMARY_MOUSE_BUTTON } from './helpers';
 
 export default class ContextMenuTrigger extends Component {
     static propTypes = {
@@ -56,7 +56,8 @@ export default class ContextMenuTrigger extends Component {
     }
 
     handleMouseDown = (event) => {
-        if (this.props.holdToDisplay >= 0 && event.button === 0) {
+        // eslint-disable-next-line no-magic-numbers
+        if (this.props.holdToDisplay >= 0 && event.button === PRIMARY_MOUSE_BUTTON) {
             event.persist();
             event.stopPropagation();
 
@@ -69,6 +70,7 @@ export default class ContextMenuTrigger extends Component {
     }
 
     handleMouseUp = (event) => {
+        // eslint-disable-next-line no-magic-numbers
         if (event.button === 0) {
             clearTimeout(this.mouseDownTimeoutId);
         }
@@ -76,6 +78,7 @@ export default class ContextMenuTrigger extends Component {
     }
 
     handleMouseOut = (event) => {
+        // eslint-disable-next-line no-magic-numbers
         if (event.button === 0) {
             clearTimeout(this.mouseDownTimeoutId);
         }
@@ -85,6 +88,7 @@ export default class ContextMenuTrigger extends Component {
     handleTouchstart = (event) => {
         this.touchHandled = false;
 
+        // eslint-disable-next-line no-magic-numbers
         if (this.props.holdToDisplay >= 0) {
             event.persist();
             event.stopPropagation();

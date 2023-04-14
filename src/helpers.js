@@ -7,6 +7,7 @@ export function hasOwnProp(obj, prop) {
 }
 
 export function uniqueId() {
+    // eslint-disable-next-line no-magic-numbers
     return Math.random().toString(36).substring(7);
 }
 
@@ -38,4 +39,17 @@ export function isElementParent(element, parent) {
     }
 
     return false;
+}
+
+export const PRIMARY_MOUSE_BUTTON = 0
+export const SECONDARY_MOUSE_BUTTON = 1
+
+export const KEYBOARD_CODES = {
+    ArrowUp: 'ArrowUp',
+    ArrowDown: 'ArrowDown',
+    ArrowLeft: 'ArrowLeft',
+    ArrowRight: 'ArrowRight',
+    Escape: 'Escape',
+    Enter: 'Enter',
+    NumpadEnter: 'NumpadEnter'
 }

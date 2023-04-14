@@ -4,3 +4,5 @@ settings:
            config: examples/webpack.config.js
 rules:
     import/no-extraneous-dependencies: off
+    import/no-relative-parent-imports: off
+    no-magic-numbers: off

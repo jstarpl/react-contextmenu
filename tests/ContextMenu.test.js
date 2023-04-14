@@ -95,7 +95,7 @@ describe('ContextMenu tests', () => {
         const data = { position: { x: 50, y: 50 }, id: 'CORRECT_ID' };
         const onHide = jest.fn();
         const component = mount(<ContextMenu id={data.id} onHide={onHide} />);
-        const escape = new window.KeyboardEvent('keydown', { keyCode: 27 });
+        const escape = new window.KeyboardEvent('keydown', { keyCode: 27, code: "Escape" });
 
         showMenu(data);
         expect(component.state()).toEqual(
@@ -119,7 +119,7 @@ describe('ContextMenu tests', () => {
         const data = { position: { x: 50, y: 50 }, id: 'CORRECT_ID' };
         const onHide = jest.fn();
         const component = mount(<ContextMenu id={data.id} onHide={onHide} />);
-        const enter = new window.KeyboardEvent('keydown', { keyCode: 13 });
+        const enter = new window.KeyboardEvent('keydown', { keyCode: 13, code: "Enter" });
 
         showMenu(data);
         expect(component.state()).toEqual(

@@ -7,7 +7,9 @@ import listener from './globalEventListener';
 import AbstractMenu from './AbstractMenu';
 import SubMenu from './SubMenu';
 import { hideMenu } from './actions';
-import { cssClasses, callIfExists, store } from './helpers';
+import { cssClasses, callIfExists, store, KEYBOARD_CODES } from './helpers';
+
+/* eslint-disable no-magic-numbers */
 
 export default class ContextMenu extends AbstractMenu {
     static propTypes = {
@@ -154,7 +156,7 @@ export default class ContextMenu extends AbstractMenu {
     }
 
     hideMenu = (e) => {
-        if (e.keyCode === 27 || e.keyCode === 13) { // ECS or enter
+        if (e.code === KEYBOARD_CODES.Escape || e.code === KEYBOARD_CODES.Enter || e.code === KEYBOARD_CODES.NumpadEnter) { // ECS or enter
             hideMenu();
         }
     }
