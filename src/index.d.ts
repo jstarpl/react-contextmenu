@@ -53,10 +53,10 @@ declare module "@jstarpl/react-contextmenu" {
         trigger: any;
     }
 
-    export const ContextMenu: React.ComponentClass<ContextMenuProps>;
-    export const ContextMenuTrigger: React.ComponentClass<ContextMenuTriggerProps>;
-    export const MenuItem: React.ComponentClass<MenuItemProps>;
-    export const SubMenu: React.ComponentClass<SubMenuProps>;
+    export const ContextMenu: React.ComponentClass<React.PropsWithChildren<ContextMenuProps>>;
+    export const ContextMenuTrigger: React.ComponentClass<React.PropsWithChildren<ContextMenuTriggerProps>>;
+    export const MenuItem: React.ComponentClass<React.PropsWithChildren<MenuItemProps>>;
+    export const SubMenu: React.ComponentClass<React.PropsWithChildren<SubMenuProps>>;
     export function connectMenu<P>(
       menuId: string
     ): (
