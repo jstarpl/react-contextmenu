@@ -1,6 +1,6 @@
 {
     "name": "@jstarpl/react-contextmenu",
-    "version": "2.14.4",
+    "version": "2.15.0",
     "description": "Context Menu implemented in React",
     "main": "modules/index.js",
     "module": "es6/index.js",
@@ -51,8 +51,8 @@
     },
     "peerDependencies": {
         "prop-types": "^15.0.0",
-        "react": "^0.14.0 || ^15.0.0 || ^16.0.1 || ^18",
-        "react-dom": "^0.14.0 || ^15.0.0 || ^16.0.1 || ^18"
+        "react": "^0.14.0 || ^15.0.0 || ^16.0.1 || ^17 || ^18",
+        "react-dom": "^0.14.0 || ^15.0.0 || ^16.0.1 || ^17 || ^18"
     },
     "devDependencies": {
         "@babel/cli": "^7.11.5",
