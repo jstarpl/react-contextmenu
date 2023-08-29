@@ -14,6 +14,7 @@ declare module "@firefox-devtools/react-contextmenu" {
         preventHideOnResize?: boolean,
         preventHideOnScroll?: boolean,
         style?: React.CSSProperties,
+        children?: React.ReactNode,
     }
 
     export interface ContextMenuTriggerProps {
@@ -25,7 +26,8 @@ declare module "@firefox-devtools/react-contextmenu" {
         renderTag?: React.ElementType,
         triggerOnLeftClick?: boolean,
         disableIfShiftIsPressed?: boolean,
-        [key: string]: any
+        [key: string]: any,
+        children?: React.ReactNode,
     }
 
     export interface MenuItemProps {
@@ -36,6 +38,7 @@ declare module "@firefox-devtools/react-contextmenu" {
         divider?: boolean,
         preventClose?: boolean,
         onClick?: {(event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>, data: Object, target: HTMLElement): void} | Function,
+        children?: React.ReactNode,
     }
 
     export interface SubMenuProps {
@@ -46,6 +49,7 @@ declare module "@firefox-devtools/react-contextmenu" {
         rtl?: boolean,
         preventCloseOnClick?: boolean,
         onClick?: {(event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>, data: Object, target: HTMLElement): void} | Function,
+        children?: React.ReactNode,
     }
 
     export interface ConnectMenuProps {
