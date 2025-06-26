@@ -43,7 +43,11 @@ export default class ContextMenuTrigger extends Component {
     }
 
     componentWillUnmount() {
-        document.removeEventListener('scroll', this.preventContextMenuOpen);
+        document.removeEventListener(
+            'scroll',
+            this.preventContextMenuOpen,
+            { capture: true }
+        );
     }
 
     touchHandled = false;
