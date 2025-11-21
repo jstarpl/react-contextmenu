@@ -137,8 +137,8 @@ export default class ContextMenuTrigger extends Component {
         event.preventDefault();
         event.stopPropagation();
 
-        let x = event.clientX || (event.touches && event.touches[0].pageX);
-        let y = event.clientY || (event.touches && event.touches[0].pageY);
+        let x = event.clientX || (event.touches && event.touches[0].clientX);
+        let y = event.clientY || (event.touches && event.touches[0].clientY);
 
         if (this.props.posX) {
             x -= this.props.posX;
